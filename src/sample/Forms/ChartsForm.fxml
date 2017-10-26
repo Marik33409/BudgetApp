@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Forms.ChartsController">
+    <children>
+        <TabPane layoutX="-1.0" layoutY="-1.0" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="День">
+                    <content>
+                        <AnchorPane fx:id="pane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <PieChart fx:id="chartDay" layoutX="-2.0" layoutY="54.0" legendVisible="false" prefHeight="317.0" prefWidth="302.0" />
+                                <DatePicker fx:id="datePicker" layoutX="211.0" layoutY="14.0" onAction="#datePicker_clicked" />
+                        <BarChart fx:id="bchartDay" barGap="0.0" categoryGap="0.0" layoutX="292.0" layoutY="59.0" legendVisible="false" prefHeight="308.0" prefWidth="307.0">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis side="LEFT" />
+                          </yAxis>
+                        </BarChart>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Месяц">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ChoiceBox fx:id="chbMonth" layoutX="78.0" layoutY="43.0" onMouseClicked="#chbMonth_clicked" prefWidth="150.0" />
+                        <ChoiceBox fx:id="chbYear" layoutX="311.0" layoutY="43.0" onMouseClicked="#chbYear_clicked" prefWidth="150.0" />
+                        <PieChart fx:id="chartMonth" layoutX="14.0" layoutY="85.0" prefHeight="272.0" prefWidth="254.0" />
+                     </children></AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Год">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ChoiceBox fx:id="chbYear2" layoutX="225.0" layoutY="14.0" onMouseClicked="#chbYear2_clicked" prefWidth="150.0" />
+                        <PieChart fx:id="chartYear" layoutX="107.0" layoutY="42.0" prefHeight="315.0" prefWidth="386.0" />
+                     </children></AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</AnchorPane>

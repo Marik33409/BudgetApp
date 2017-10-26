@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.76-ea"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Forms.IncomeController">
+    <children>
+        <GridPane prefHeight="400.0" prefWidth="600.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="327.0" minWidth="10.0" prefWidth="318.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="369.0" minWidth="10.0" prefWidth="165.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="369.0" minWidth="10.0" prefWidth="128.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="194.0" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="267.0" minHeight="10.0" prefHeight="230.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="105.0" minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <Button fx:id="btnAdd" mnemonicParsing="false" onMouseClicked="#btnAdd_click" prefHeight="25.0"
+                        prefWidth="293.0" text="Добавить" GridPane.columnIndex="1"/>
+                <TextField fx:id="txbValue"/>
+                <ListView fx:id="lstItems" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1"/>
+                <ComboBox fx:id="cmbTypes" onShown="#cmb_OnShow" prefWidth="150.0" promptText="Выберите категорию"
+                          GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <Button fx:id="btnDelete" mnemonicParsing="false" onMouseClicked="#btnDelete_click" prefHeight="25.0"
+                        prefWidth="316.0" text="Удалить" GridPane.rowIndex="2"/>
+                <Button fx:id="btnTypeDelete" alignment="TOP_LEFT" mnemonicParsing="false"
+                        onMouseClicked="#btnTypeDelete_click" prefHeight="25.0" prefWidth="82.0"
+                        text="Удалить выбранную категорию" textAlignment="JUSTIFY" GridPane.columnIndex="2"
+                        GridPane.rowIndex="1"/>
+                <Button fx:id="btnDiagrams" mnemonicParsing="false" onMouseClicked="#btnDiagrams_click" text="Диаграммы"
+                        GridPane.columnIndex="2"/>
+            </children>
+        </GridPane>
+        <Label id="lblTitile" text="Доходы"/>
+
+    </children>
+</AnchorPane>
