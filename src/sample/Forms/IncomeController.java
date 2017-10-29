@@ -5,16 +5,20 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import sample.FileIO.FileIO;
 import sample.Models.Item;
 import sample.Models.TType;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 
 //TODO доделать еласс FilIO для хранения всей информации
@@ -50,6 +54,12 @@ public class IncomeController implements Initializable {
             common.ShowMessage(ex.getMessage());
         }
     }
+    private static final LocalDate LOCAL_DATE (String dateString){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate localDate = LocalDate.parse(dateString, formatter);
+        return localDate;
+    }
+
 
     private void AddValue() {
         try {
@@ -57,7 +67,17 @@ public class IncomeController implements Initializable {
             TType type = (TType) cmbTypes.getValue();
             if (type == null || type.GetId() == fileIO.incomeTypes.size())
                 throw new Exception("Выберите категорию");
-            Date date = new Date();
+            if (datePicker.getValue()==null)
+                throw  new Exception("Выберите дату");
+
+            System.out.println(datePicker.getValue());
+            Date date = Date.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            //2017-10-30 need to convert->30.10.2017
+            //yy-mm-dd -> dd.mm.yy
+            //DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+            //Date date = format.parse(datePicker.getValue());
+
+           //  Date date=new Date();
             fileIO.incomes.add(new Item(fileIO.incomes.size() + 1, val, date, type));
             LoadItems();
             fileIO.SaveAll();
@@ -143,6 +163,10 @@ public class IncomeController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Load();
+//        System.out.println(LocalDateTime);
+        //Date date=new Date();
+        datePicker.setValue(LocalDate.now());
+
         cmbTypes.valueProperty().addListener(new ChangeListener<TType>() {
             @Override
             public void changed(ObservableValue ov, TType t, TType t1) {

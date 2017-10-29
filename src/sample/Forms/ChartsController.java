@@ -25,6 +25,9 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.List;
+
+import static com.sun.javafx.tools.resource.DeployResource.Type.data;
 
 /**
  * Created by mark on 05.10.2017.
@@ -48,6 +51,8 @@ public class ChartsController implements Initializable {
     ChoiceBox chbYear;
     @FXML
     ChoiceBox chbYear2;
+
+    List<String> colors = new ArrayList<>();
 
     private CategoryAxis xAxis = new CategoryAxis();
     private NumberAxis yAxis = new NumberAxis();
@@ -93,15 +98,20 @@ public class ChartsController implements Initializable {
 
 
     public void FillChart() {
-        /*
-        ObservableList<PieChart.Data> answerDay = FXCollections.observableArrayList();
-        ObservableList<PieChart.Data> answerMonth = FXCollections.observableArrayList();
-        ObservableList<PieChart.Data> answerYear = FXCollections.observableArrayList();
+        colors.add("-fx-bar-fill: aqua;");
+        colors.add("-fx-bar-fill: chartreuse;");
+        colors.add("-fx-bar-fill: crimson;");
+        colors.add("-fx-bar-fill: gold;");
+        colors.add("-fx-bar-fill: fuchsia;");
+        colors.add("-fx-bar-fill: green;");
+        colors.add("-fx-bar-fill: deepskyblue;");
+        colors.add("-fx-bar-fill: saddlebrown;");
+        colors.add("-fx-bar-fill: slategrey;");
+        colors.add("-fx-bar-fill: teal;");
+        colors.add("-fx-bar-fill: chocolate;");
 
-        answerDay.removeAll(answerDay);
-        answerMonth.removeAll(answerMonth);
-        answerYear.removeAll(answerYear);
-        */
+        //ПОСТРОЕНИЕ КРУГОВОЙ ДИАГРАММЫ
+        chartDay.getData().clear();
         Map<String, Item> dict = new HashMap<String, Item>();
         for (Item item : items) {
             if (datePicker.getValue() != null && datePicker.getValue().equals(ConvertToLDate(item.date))) {
@@ -112,21 +122,53 @@ public class ChartsController implements Initializable {
             }
         }
         chartDay.setData(ConvertToChartData(dict));
+        for (int i = 0; i < dict.size(); i++) {
+            chartDay.getData().get(i).getNode().setStyle(colors.get(i));
+        }
 
-
+        //ПОСТРОЕНИЕ СТОЛБЧАТОЙ ДИАГРАММЫ
+//       BarChart<String,Number> bc = new BarChart(xAxis,yAxis);
+        bchartDay.getData().clear();
         bchartDay.setTitle("Доходы");
         bchartDay.setBarGap(0);
         bchartDay.setCategoryGap(0);
         xAxis.setLabel("Value");
         yAxis.setLabel("Income");
+        int i = 0;
         for (String key : dict.keySet()) {
             XYChart.Series series = new XYChart.Series();
+            XYChart.Data<String, Number> data = new XYChart.Data<>(dict.get(key).type.GetName(), dict.get(key).value);
+            //data.getNode().getStyleClass().add("-fx-bar-fill: aqua;");
+            i++;
+            series.getData().add(data);
             series.getData().add(new XYChart.Data(dict.get(key).type.GetName(), dict.get(key).value));
             bchartDay.getData().add(series);
         }
 
 
 
+
+
+
+//        for (int i = 0; i < bchartDay.size(); i++) {
+//            for (Node node : chart.lookupAll(".series" + i)) {
+//                node.getStyleClass().remove("default-color" + (i));
+//                node.getStyleClass().add("default-color" + (i ));
+//            }
+//        }
+//      int i = 0;
+//        for (Node node: bchartDay.getData()){
+//            for (XYChart.Data<String, Number> item: (XYChart.Series)(node.getData())){
+//                item.getNode().setStyle(colors.get(i));
+//                i++;
+//            }
+//        }
+//        for (int i = 0; i < serie.size(); i++) {
+//            chartDay.getData().get(i).getNode().setStyle(colors.get(i));
+//        }
+
+
+        //ПОСТРОЕНИЕ КРУГОВОЙ ДИАГРАММЫ НА МЕСЯЦ
         dict = new HashMap<String, Item>();
         for (Item item : items) {
             int month = Integer.valueOf((String) chbMonth.getValue());
@@ -152,7 +194,7 @@ public class ChartsController implements Initializable {
         }
         chartYear.setData(ConvertToChartData(dict));
     }
-
+//УСТАНОВКА ДАТЫ НА МЕСЯЧНЫЕ ДИАГРАММЫ
     public void FillChoiseBoxes() {
         ObservableList<String>
                 months = FXCollections.observableArrayList(),
@@ -200,7 +242,7 @@ public class ChartsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            pane.getStylesheets().add(ChartsController.class.getResource("style.css").toExternalForm());
+           // pane.getStylesheets().add(ChartsController.class.getResource("style.css").toExternalForm());
             if (io.GetTemp().equals("income")) {
                 items = io.incomes;
             } else if (io.GetTemp().equals("outcome")) {
