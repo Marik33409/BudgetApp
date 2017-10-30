@@ -70,14 +70,7 @@ public class IncomeController implements Initializable {
             if (datePicker.getValue()==null)
                 throw  new Exception("Выберите дату");
 
-            System.out.println(datePicker.getValue());
             Date date = Date.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            //2017-10-30 need to convert->30.10.2017
-            //yy-mm-dd -> dd.mm.yy
-            //DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
-            //Date date = format.parse(datePicker.getValue());
-
-           //  Date date=new Date();
             fileIO.incomes.add(new Item(fileIO.incomes.size() + 1, val, date, type));
             LoadItems();
             fileIO.SaveAll();
@@ -163,8 +156,6 @@ public class IncomeController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Load();
-//        System.out.println(LocalDateTime);
-        //Date date=new Date();
         datePicker.setValue(LocalDate.now());
 
         cmbTypes.valueProperty().addListener(new ChangeListener<TType>() {

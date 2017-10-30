@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -16,13 +19,37 @@
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints maxHeight="256.0" minHeight="0.0" prefHeight="17.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="319.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="328.0" minHeight="10.0" prefHeight="184.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="149.0" minHeight="10.0" prefHeight="148.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="319.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="328.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="312.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="312.0" minHeight="10.0" prefHeight="266.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
                 <Label alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" text="Счета" />
-            <Button fx:id="AddAcc" onMouseClicked="#btnAdd_click" mnemonicParsing="false" prefHeight="27.0" prefWidth="194.0" text="Добавить счет" GridPane.rowIndex="1" />
+            <TextField focusTraversable="false" promptText="Введите название счета" GridPane.rowIndex="1" />
+            <TextField focusTraversable="false" promptText="Введите баланс счета" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="296.0" text="Добавить счет" GridPane.rowIndex="3" />
+            <TextField focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="27.0" prefWidth="176.0" promptText="Введите сумму дохода" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets top="-230.0" />
+               </GridPane.margin>
+            </TextField>
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="116.0" text="Прибавить" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets left="180.0" top="-230.0" />
+               </GridPane.margin>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="116.0" text="Отнять" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets left="180.0" top="-150.0" />
+               </GridPane.margin>
+            </Button>
+            <TextField focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="27.0" prefWidth="176.0" promptText="Введите сумму расхода" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets top="-150.0" />
+               </GridPane.margin>
+            </TextField>
+            <ListView fx:id="lstacc" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4" />
             </children>
         </GridPane>
     </children>

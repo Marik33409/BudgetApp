@@ -11,6 +11,9 @@ import sample.Models.TType;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +32,8 @@ public class OutcomeController implements Initializable {
     @FXML
     private ComboBox cmbTypes;
     @FXML
+    private DatePicker datePicker;
+
     private Button btnTypeDelete;
     //</editor-fold>
 
@@ -46,6 +51,11 @@ public class OutcomeController implements Initializable {
             common.ShowMessage(ex.getMessage());
         }
     }
+    private static final LocalDate LOCAL_DATE (String dateString){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate localDate = LocalDate.parse(dateString, formatter);
+        return localDate;
+    }
 
     private void AddValue() {
         try {
@@ -53,7 +63,10 @@ public class OutcomeController implements Initializable {
             TType type = (TType) cmbTypes.getValue();
             if (type == null || type.GetId() == fileIO.outomeTypes.size())
                 throw new Exception("Выберите категорию");
-            Date date = new Date();
+            if (datePicker.getValue()==null)
+                throw  new Exception("Выберите дату");
+
+            Date date = Date.from(datePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
             fileIO.outcomes.add(new Item(fileIO.outcomes.size() + 1, val, date, type));
             LoadItems();
             fileIO.SaveAll();
@@ -125,11 +138,17 @@ public class OutcomeController implements Initializable {
         common.ShowForm("ChartsForm.fxml");
        //common.ShowChartForm("ChartsForm.fxml", fileIO.outcomes,2);
     }
+
+    public void datePicker_clicked() {
+
+    }
     //</editor-fold>
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Load();
+        datePicker.setValue(LocalDate.now());
+
         cmbTypes.valueProperty().addListener(new ChangeListener<TType>() {
             @Override
             public void changed(ObservableValue ov, TType t, TType t1) {
