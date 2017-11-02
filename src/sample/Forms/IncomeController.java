@@ -5,20 +5,17 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import sample.FileIO.FileIO;
 import sample.Models.Item;
 import sample.Models.TType;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Date;
+import java.util.ResourceBundle;
 
 
 //TODO доделать еласс FilIO для хранения всей информации
@@ -41,8 +38,8 @@ public class IncomeController implements Initializable {
     //</editor-fold>
 
     //<editor-fold desc="Поля">
-    private FileIO fileIO = new FileIO("cache.txt");
     private Common common = new Common();
+    private FileIO fileIO = new FileIO(common.GetFileName());
     //</editor-fold>
 
     //<editor-fold desc="Методы">
@@ -54,12 +51,12 @@ public class IncomeController implements Initializable {
             common.ShowMessage(ex.getMessage());
         }
     }
+
     private static final LocalDate LOCAL_DATE (String dateString){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate localDate = LocalDate.parse(dateString, formatter);
         return localDate;
     }
-
 
     private void AddValue() {
         try {

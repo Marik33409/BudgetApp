@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Forms.AccountsController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Forms.AccountsController">
     <children>
         <GridPane prefHeight="400.0" prefWidth="601.0">
             <columnConstraints>
@@ -21,35 +21,36 @@
                 <RowConstraints maxHeight="256.0" minHeight="0.0" prefHeight="17.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="319.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="328.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="328.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="312.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="312.0" minHeight="10.0" prefHeight="266.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
                 <Label alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" text="Счета" />
-            <TextField focusTraversable="false" promptText="Введите название счета" GridPane.rowIndex="1" />
-            <TextField focusTraversable="false" promptText="Введите баланс счета" GridPane.rowIndex="2" />
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="296.0" text="Добавить счет" GridPane.rowIndex="3" />
-            <TextField focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="27.0" prefWidth="176.0" promptText="Введите сумму дохода" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <TextField fx:id="txbName" focusTraversable="false" promptText="Введите название счета" GridPane.rowIndex="1" />
+            <TextField fx:id="txbValue" focusTraversable="false" promptText="Введите баланс счета" GridPane.rowIndex="2" />
+            <Button fx:id="btnAdd" mnemonicParsing="false" onMouseClicked="#btnAdd_click" prefHeight="27.0" prefWidth="296.0" text="Добавить счет" GridPane.rowIndex="4" />
+            <TextField fx:id="txbIncome" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="27.0" prefWidth="176.0" promptText="Введите сумму дохода" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
-                  <Insets top="-230.0" />
-               </GridPane.margin>
+                <Insets top="-230.0" />
+            </GridPane.margin>
             </TextField>
-            <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="116.0" text="Прибавить" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <Button fx:id="btnAddVal" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="116.0" text="Прибавить" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets left="180.0" top="-230.0" />
                </GridPane.margin>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="116.0" text="Отнять" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <Button fx:id="btnSubVal" mnemonicParsing="false" prefHeight="27.0" prefWidth="116.0" text="Отнять" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets left="180.0" top="-150.0" />
                </GridPane.margin>
             </Button>
-            <TextField focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="27.0" prefWidth="176.0" promptText="Введите сумму расхода" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <TextField fx:id="txbOutcome" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="27.0" prefWidth="176.0" promptText="Введите сумму расхода" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets top="-150.0" />
                </GridPane.margin>
             </TextField>
-            <ListView fx:id="lstacc" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4" />
+            <ListView fx:id="lstAcc" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5" />
             </children>
         </GridPane>
     </children>

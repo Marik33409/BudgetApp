@@ -1,5 +1,6 @@
 package sample.Forms;
 
+import com.sun.corba.se.impl.orbutil.concurrent.Sync;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -15,33 +16,36 @@ import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import sample.FileIO.FileIO;
 import sample.Models.Item;
 
-import java.awt.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 
 /**
  * Created by mark on 05.10.2017.
  */
 public class ChartsController implements Initializable {
+
+    //<editor-fold desc="Controls">
     @FXML
     AnchorPane pane;
-    @FXML
-    BarChart bchartDay;
     @FXML
     PieChart chartDay;
     @FXML
     PieChart chartMonth;
     @FXML
     PieChart chartYear;
+    @FXML
+    Label resday;
     @FXML
     DatePicker datePicker;
     @FXML
@@ -50,6 +54,13 @@ public class ChartsController implements Initializable {
     ChoiceBox chbYear;
     @FXML
     ChoiceBox chbYear2;
+    @FXML
+    BarChart bchartDay;
+    @FXML
+    BarChart bchartMonth;
+    @FXML
+    BarChart bchartYear;
+    //</editor-fold>
 
     List<String> colors = new ArrayList<>();
 
@@ -97,88 +108,112 @@ public class ChartsController implements Initializable {
         return res;
     }
 
-    public void SyncColors(BarChart barChart, PieChart pieChart) {
-        ArrayList<String> styles = new ArrayList<>();
-        for (int i = 0; i < pieChart.getData().size(); i++) {
-            styles.add(pieChart.getData().get(i).getNode().getStyle());
+    /**
+     * Сравнивает текущий элемент по дню
+     *
+     * @param item
+     * @return
+     */
+    public Boolean CompareDay(Item item) {
+        return (datePicker.getValue() != null && datePicker.getValue().equals(ConvertToLDate(item.date)));
+    }
+
+    /**
+     * Сравнивает текущий элемент по месяцу
+     *
+     * @param item
+     * @return
+     */
+    public Boolean CompareMonth(Item item) {
+        int month = Integer.valueOf((String) chbMonth.getValue());
+        int year = Integer.valueOf((String) chbYear.getValue());
+        return (ConvertToLDate(item.date).getMonthValue() == month && ConvertToLDate(item.date).getYear() == year);
+    }
+
+    /**
+     * Сравнивает текущий элемент по году
+     *
+     * @param item
+     * @return
+     */
+    public Boolean CompareYear(Item item) {
+        int year = Integer.valueOf((String) chbYear2.getValue());
+        return (ConvertToLDate(item.date).getYear() == year);
+    }
+
+    public Boolean Compare(Item item, int type) {
+        switch (type) {
+            case 1:
+                return CompareDay(item);
+            case 2:
+                return CompareMonth(item);
+            case 3:
+                return CompareYear(item);
+            default:
+                return false;
         }
+    }
+
+    public void SyncCharts(BarChart barChart, PieChart pieChart, int type) {
+        pieChart.getData().clear();
+        barChart.getData().clear();
+        String[] styles = new String[]{
+                "#f3622d",
+                "#fba71b",
+                "#57b757",
+                "#41a9c9",
+                "#4258c9",
+                "#9a42c8",
+                "#c84164",
+                "#888888"
+        };
+        Map<String, Item> dict = new HashMap<String, Item>();
         int i = 0;
-        for (Object item : barChart.getData()) {
-            ((XYChart.Series<String, Number>) item).getNode().setStyle(styles.get(i++));
+        for (Item item : items) {
+            if (Compare(item, type)) {
+                if (dict.get(item.type.GetName()) == null) {
+                    dict.put(item.type.GetName(), item);
+                } else {
+                    dict.get(item.type.GetName()).value += item.value;
+                }
+            }
+        }
+        pieChart.setData(ConvertToChartData(dict));
+        //TODO: сделать подписи в зависимости от формы!!!
+//        bchartDay.setTitle("Доходы");
+//        xAxis.setLabel("Значение");
+//        yAxis.setLabel("категории");
+        for (i = 0; i < pieChart.getData().size(); i++)
+            pieChart.getData().get(i).getNode().setStyle("-fx-pie-color:" + styles[i] + ";");
+        barChart.setBarGap(0);
+        barChart.setCategoryGap(0);
+        i = 0;
+        for (String key : dict.keySet()) {
+            XYChart.Series series = new XYChart.Series();
+            XYChart.Data<String, Number> data = new XYChart.Data(dict.get(key).type.GetName(), dict.get(key).value);
+            series.getData().add(data);
+            barChart.getData().add(series);
+            data.getNode().setStyle("-fx-bar-fill:" + styles[i++] + ";");
         }
     }
 
     /**
      * Заполняет диаграммы
      */
-    public void FillChart() {
-        //ПОСТРОЕНИЕ КРУГОВОЙ ДИАГРАММЫ
-        chartDay.getData().clear();
-        Map<String, Item> dict = new HashMap<String, Item>();
-        for (Item item : items) {
-            if (datePicker.getValue() != null && datePicker.getValue().equals(ConvertToLDate(item.date))) {
-
-                chartDay.setData(ConvertToChartData(dict));
-                if (dict.get(item.type.GetName()) == null)
-                    dict.put(item.type.GetName(), item);
-                else
-                    dict.get(item.type.GetName()).value += item.value;
+    public void FillChart()  {
+        try {
+            io.OpenItems();
+            if (io.GetTemp().equals("income")) {
+                items = io.incomes;
+            } else if (io.GetTemp().equals("outcome")) {
+                items = io.outcomes;
             }
+            SyncCharts(bchartDay, chartDay, 1);
+            SyncCharts(bchartMonth, chartMonth, 2);
+            SyncCharts(bchartYear, chartYear, 3);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        chartDay.setData(ConvertToChartData(dict));
-
-        ArrayList<String> styles = new ArrayList<>();
-        for (int i = 0; i < chartDay.getData().size(); i++) {
-            styles.add(chartDay.getData().get(i).getNode().getStyle());
-        }
-        //ПОСТРОЕНИЕ СТОЛБЧАТОЙ ДИАГРАММЫ
-        bchartDay.getData().clear();
-        bchartDay.setTitle("Доходы");
-        bchartDay.setBarGap(0);
-        bchartDay.setCategoryGap(0);
-        xAxis.setLabel("Value");
-        yAxis.setLabel("Income");
-        int i=0;
-        for (String key : dict.keySet()) {
-            XYChart.Series series = new XYChart.Series();
-            XYChart.Data<String, Number> data = new XYChart.Data(dict.get(key).type.GetName(), dict.get(key).value);
-            series.getData().add(data);
-
-            bchartDay.getData().add(series);
-            //брать цвета у круговой диаграммы
-            data.getNode().setStyle(styles.get(i++));
-        }
-
-
-        //SyncColors(bchartDay,chartDay);
-
-
-        //ПОСТРОЕНИЕ КРУГОВОЙ ДИАГРАММЫ НА МЕСЯЦ
-        dict = new HashMap<String, Item>();
-        for (Item item : items) {
-            int month = Integer.valueOf((String) chbMonth.getValue());
-            int year = Integer.valueOf((String) chbYear.getValue());
-            if (ConvertToLDate(item.date).getMonthValue() == month && ConvertToLDate(item.date).getYear() == year) {
-                if (dict.get(item.type.GetName()) == null)
-                    dict.put(item.type.GetName(), item);
-                else
-                    dict.get(item.type.GetName()).value += item.value;
-            }
-        }
-        chartMonth.setData(ConvertToChartData(dict));
-
-        //ПОСТРОЕНИЕ КРУГОВОЙ ДИАГРАММЫ НА ГОД
-        dict = new HashMap<String, Item>();
-        for (Item item : items) {
-            int year = Integer.valueOf((String) chbYear2.getValue());
-            if (ConvertToLDate(item.date).getYear() == year) {
-                if (dict.get(item.type.GetName()) == null)
-                    dict.put(item.type.GetName(), item);
-                else
-                    dict.get(item.type.GetName()).value += item.value;
-            }
-        }
-        chartYear.setData(ConvertToChartData(dict));
     }
 
     /**

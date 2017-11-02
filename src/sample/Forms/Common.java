@@ -23,7 +23,7 @@ public class Common {
 
     private String fileName = "cache.txt";
 
-    public  String GetFileName(){
+    public String GetFileName() {
         return fileName;
     }
 
@@ -35,7 +35,8 @@ public class Common {
         stage.setScene(scene);
         stage.show();
     }
-    public void ShowAddTypeForm(String name,int typeId) throws IOException {
+
+    public void ShowAddTypeForm(String name, int typeId) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample/Forms/" + name));
         Parent root = (Parent) loader.load();
         Stage stage = new Stage();
@@ -45,7 +46,8 @@ public class Common {
         stage.setScene(scene);
         stage.show();
     }
-    public void ShowChartForm(String name,ArrayList<Item> items,int type) throws IOException, InterruptedException {
+
+    public void ShowChartForm(String name, ArrayList<Item> items, int type) throws IOException, InterruptedException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample/Forms/" + name));
         Parent root = (Parent) loader.load();
         Stage stage = new Stage();
@@ -66,10 +68,12 @@ public class Common {
     }
 
     public void FillLst(ListView lst, List<Item> items) {
-        ObservableList<Item> obsItems = FXCollections.observableArrayList();
-        for (Item item : items)
-            obsItems.add(item);
-        lst.setItems(obsItems);
+        if (items != null) {
+            ObservableList<Item> obsItems = FXCollections.observableArrayList();
+            for (Item item : items)
+                obsItems.add(item);
+            lst.setItems(obsItems);
+        }
     }
 
     public void ShowMessage(String message) {

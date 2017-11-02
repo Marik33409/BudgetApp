@@ -38,8 +38,8 @@ public class OutcomeController implements Initializable {
     //</editor-fold>
 
     //<editor-fold desc="Поля">
-    private FileIO fileIO = new FileIO("cache.txt");
     private Common common = new Common();
+    private FileIO fileIO = new FileIO(common.GetFileName());
     //</editor-fold>
 
     //<editor-fold desc="Методы">

@@ -13,6 +13,11 @@ public class TType {
 
     }
 
+    /**
+     * создает тип с указанными свойствами
+     * @param _id ИД
+     * @param _name имя типа
+     */
     public TType(int _id, String _name) {
         id = _id;
         name = _name;

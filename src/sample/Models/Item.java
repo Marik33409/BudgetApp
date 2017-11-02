@@ -21,10 +21,13 @@ public class Item {
 
     }
 
+    /**
+     * Создает элемент для сохранения
+     *
+     * @param values id,name,value,date,type
+     */
     public Item(String values[]) {
         try {
-//            if (values.length < 5)
-//                throw new Exception("Wrong values count");
             //"%d|%s|%f|%s|%s \n",id,name,value,date,type
             id = Integer.parseInt(values[0]);
             name = values[1];
